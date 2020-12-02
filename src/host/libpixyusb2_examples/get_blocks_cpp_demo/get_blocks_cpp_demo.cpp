@@ -19,6 +19,10 @@
 Pixy2        pixy;
 static bool  run_flag = true;
 
+int Counter = 0 ;
+int Num_class1 = 0 ;
+int Num_class2 = 0 ;
+int Num_class3 = 0 ;
 
 void handle_SIGINT(int unused)
 {
@@ -37,14 +41,31 @@ void  get_blocks()
   // Were blocks detected? //
   if (pixy.ccc.numBlocks)
   {
-    // Blocks detected - print them! //
-
-    printf ("Detected %d block(s)\n", pixy.ccc.numBlocks);
-
-    for (Block_Index = 0; Block_Index < pixy.ccc.numBlocks; ++Block_Index)
-    {
-      printf ("  Block %d: ", Block_Index + 1);
-      pixy.ccc.blocks[Block_Index].print();
+    // Blocks detected - calculation them! //
+    
+    Counter = 0 ;     // Reset "Not detected any block Counter"
+    
+    for (Block_Index = 0; Block_Index < pixy.ccc.numBlocks; ++Block_Index){
+      if(pixy.ccc.blocks[Block_Index].report_age() == 5) //Block alive over 5 Frame, then record it.
+      {
+        if(pixy.ccc.blocks[Block_Index].report_signature() == 1)      //Red
+          Num_class1 += 1 ;
+        else if(pixy.ccc.blocks[Block_Index].report_signature() == 2) //Green
+          Num_class2 += 1 ;
+        else if(pixy.ccc.blocks[Block_Index].report_signature() == 3) //Yellow
+          Num_class3 += 1 ;
+      }
+    }
+  }
+  else{     //Not detected any block
+    Counter ++ ;      // "Not detected any block Counter" +1
+    
+    if (Counter == 1000){
+      // No objects passed for a while... Show the result.
+      printf ("Result:\n\r");
+      printf ("\033[1;31Red:%d\033[0m \n\r",Num_class1);
+      printf ("\033[1;32Green:%d\033[0m \n\r",Num_class2);
+      printf ("\033[1;33Yellow:%d\033[0m \n\r",Num_class3);
     }
   }
 }
