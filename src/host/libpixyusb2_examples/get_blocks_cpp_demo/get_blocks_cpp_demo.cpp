@@ -66,6 +66,10 @@ void  get_blocks()
       printf ("\033[1;31Red:%d\033[0m \n\r",Num_class1);
       printf ("\033[1;32Green:%d\033[0m \n\r",Num_class2);
       printf ("\033[1;33Yellow:%d\033[0m \n\r",Num_class3);
+      
+      Num_class1 = 0 ;
+      Num_class2 = 0 ;
+      Num_class3 = 0 ;
     }
   }
 }
