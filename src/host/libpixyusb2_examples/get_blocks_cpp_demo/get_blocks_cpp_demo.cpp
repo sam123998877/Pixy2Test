@@ -12,6 +12,9 @@
 //
 // end license header
 //
+//
+// Edited By Sam
+//
 
 #include <signal.h>
 #include "libpixyusb2.h"
@@ -20,6 +23,7 @@ Pixy2        pixy;
 static bool  run_flag = true;
 
 int Counter = 0 ;
+int Round = 0 ;
 int Num_class1 = 0 ;
 int Num_class2 = 0 ;
 int Num_class3 = 0 ;
@@ -46,7 +50,7 @@ void  get_blocks()
     Counter = 0 ;     // Reset "Not detected any block Counter"
     
     for (Block_Index = 0; Block_Index < pixy.ccc.numBlocks; ++Block_Index){
-      if(pixy.ccc.blocks[Block_Index].report_age() == 5) //Block alive over 5 Frame, then record it.
+      if(pixy.ccc.blocks[Block_Index].report_age() == 3) //Block alive over 5 Frame, then record it.
       {
         if(pixy.ccc.blocks[Block_Index].report_signature() == 1)      //Red
           Num_class1 += 1 ;
@@ -60,12 +64,13 @@ void  get_blocks()
   else{     //Not detected any block
     Counter ++ ;      // "Not detected any block Counter" +1
     
-    if (Counter == 1000){
+    if (Counter == 300){
+      Round ++ ;
       // No objects passed for a while... Show the result.
-      printf ("Result:\n\r");
-      printf ("\033[1;31Red:%d\033[0m \n\r",Num_class1);
-      printf ("\033[1;32Green:%d\033[0m \n\r",Num_class2);
-      printf ("\033[1;33Yellow:%d\033[0m \n\r",Num_class3);
+      printf ("--- Result %d ---\n\r",Round);
+      printf ("\033[1;31mRed:%d\033[0m \n\r",Num_class1);
+      printf ("\033[1;32mGreen:%d\033[0m \n\r",Num_class2);
+      printf ("\033[1;33mYellow:%d\033[0m \n\r\n\r",Num_class3);
       
       Num_class1 = 0 ;
       Num_class2 = 0 ;
