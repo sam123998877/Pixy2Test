@@ -50,7 +50,7 @@ void  get_blocks()
     Counter = 0 ;     // Reset "Not detected any block Counter"
     
     for (Block_Index = 0; Block_Index < pixy.ccc.numBlocks; ++Block_Index){
-      if(pixy.ccc.blocks[Block_Index].report_age() == 3) //Block alive over 5 Frame, then record it.
+      if(pixy.ccc.blocks[Block_Index].report_age() == 3) //Block alive over 3 Frame, then record it.
       {
         if(pixy.ccc.blocks[Block_Index].report_signature() == 1)      //Red
           Num_class1 += 1 ;
